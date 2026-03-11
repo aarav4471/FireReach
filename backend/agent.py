@@ -17,8 +17,8 @@ def run_firereach_agent(company: str, icp: str, email: str):
         tool_outreach_automated_sender.invoke({"signals": str(run_state["signals"]), "icp": icp, "company": company, "email_address": email})
         return run_state
 
-    # Initialize LLM
-    llm = ChatGroq(temperature=0, groq_api_key=api_key, model_name="llama-3.3-70b-versatile")
+    # Initialize LLM - Using 8B model for better rate limit durability in free tier
+    llm = ChatGroq(temperature=0, groq_api_key=api_key, model_name="llama-3.1-8b-instant")
     
     tools = [tool_signal_harvester, tool_research_analyst, tool_outreach_automated_sender]
     
