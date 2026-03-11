@@ -1,14 +1,30 @@
+import logging
+import os
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agent import run_firereach_agent
+from config import settings
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+logger = logging.getLogger("FireReach")
 
 app = FastAPI(title="FireReach API")
-VERSION = "1.2.0"
+VERSION = "1.2.1"
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info("="*50)
+    logger.info(f"FireReach API Version {VERSION} starting...")
+    logger.info(f"GROQ_API_KEY loading: {'LOADED' if settings.GROQ_API_KEY else 'MISSING'}")
+    logger.info(f"SERPER_API_KEY loading: {'LOADED' if settings.SERPER_API_KEY else 'MISSING'}")
+    logger.info(f"RESEND_API_KEY loading: {'LOADED' if settings.RESEND_API_KEY else 'MISSING'}")
+    logger.info("="*50)
 
 @app.get("/")
 async def root():
-    print(f"[{VERSION}] Root endpoint hit", flush=True)
+    logger.info(f"Root endpoint hit (v{VERSION})")
     return {"message": "FireReach API is Live!", "version": VERSION, "status": "running"}
 
 
@@ -34,14 +50,14 @@ class AgentResponse(BaseModel):
 
 @app.post("/run-agent", response_model=AgentResponse)
 async def run_agent(request: AgentRequest):
-    print(f"[{VERSION}] Received run-agent request for company: {request.company}", flush=True)
+    logger.info(f"Received run-agent request for company: {request.company}")
     try:
         result = run_firereach_agent(
             company=request.company,
             icp=request.icp,
             email=request.email
         )
-        print(f"[{VERSION}] Agent execution completed for {request.company}", flush=True)
+        logger.info(f"Agent execution completed for {request.company}")
         return AgentResponse(
             signals=result.get("signals", []),
             research=result.get("research", ""),

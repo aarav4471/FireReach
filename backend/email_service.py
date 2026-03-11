@@ -1,13 +1,14 @@
 from config import settings
 import resend
 import os
+import logging
+
+logger = logging.getLogger("FireReach")
 
 def send_email(to_email: str, subject: str, body: str):
     resend.api_key = settings.RESEND_API_KEY
     if not resend.api_key:
-        print("MOCK SEND EMAIL:", to_email)
-        print("SUBJECT:", subject)
-        print("BODY:", body)
+        logger.warning(f"MOCK SEND EMAIL to {to_email}")
         return {"status": "mocked"}
         
     try:
@@ -18,9 +19,9 @@ def send_email(to_email: str, subject: str, body: str):
             "html": f"<div style='white-space: pre-wrap;'>{body}</div>"
         }
         r = resend.Emails.send(params)
-        print("RESEND API RESPONSE:", r)
+        logger.info(f"RESEND API SUCCESS: {r}")
         return {"status": "sent", "resend_id": getattr(r, "id", None)}
     except Exception as e:
         error_msg = str(e)
-        print("CRITICAL: Failed to send email via Resend:", error_msg)
+        logger.error(f"RESEND API FAILURE: {error_msg}")
         return {"status": "error", "message": error_msg}
