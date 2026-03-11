@@ -1,6 +1,7 @@
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API_URL = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/$/, '');
 
 export const runAgent = async (company, icp, email) => {
+  console.log(`Connecting to FireReach API at: ${API_URL}/run-agent`);
   try {
     const response = await fetch(`${API_URL}/run-agent`, {
       method: 'POST',
