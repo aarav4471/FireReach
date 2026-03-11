@@ -58,6 +58,7 @@ FireReach is an AI-powered autonomous GTM outreach agent that automates the work
 3. Build Command: `pip install -r requirements.txt`
 4. Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 5. Add the necessary Environment Variables.
+6. in my case after deploying llama model-versatile reached the limit so it is not giving output but locaaly it is giving output 
 
 **Frontend (Vercel):**
 1. Connect your repository to Vercel.
