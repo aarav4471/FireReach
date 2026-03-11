@@ -8,15 +8,13 @@ from config import settings
 run_state = {
     "signals": [],
     "research": "",
-    "email": "",
-    "status": "Initializing"
+    "email": ""
 }
 
 def clear_run_state():
     run_state["signals"] = []
     run_state["research"] = ""
     run_state["email"] = ""
-    run_state["status"] = "Reset"
 
 @tool
 def tool_signal_harvester(company: str) -> str:
