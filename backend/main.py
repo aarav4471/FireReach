@@ -42,6 +42,10 @@ async def run_agent(request: AgentRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.get("/")
+async def root():
+    return {"message": "FireReach API is Live!", "docs": "/docs"}
+
 @app.get("/health")
 async def health_check():
     return {"status": "ok"}
