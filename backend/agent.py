@@ -34,9 +34,12 @@ def run_firereach_agent(company: str, icp: str, email: str):
     input_text = f"Execute the outreach workflow for Company: {company}. The ICP is '{icp}'. The target email is '{email}'."
     
     try:
+        run_state["status"] = "Running"
         agent_executor.invoke({"input": input_text})
+        run_state["status"] = "Complete"
     except Exception as e:
         print(f"Agent execution encountered an error: {e}")
+        run_state["status"] = f"Error: {str(e)}"
         
     run_state["target_email"] = email
     return run_state
