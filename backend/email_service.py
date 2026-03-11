@@ -1,8 +1,9 @@
+from config import settings
 import resend
 import os
 
 def send_email(to_email: str, subject: str, body: str):
-    resend.api_key = os.getenv("RESEND_API_KEY")
+    resend.api_key = settings.RESEND_API_KEY
     if not resend.api_key:
         print("MOCK SEND EMAIL:", to_email)
         print("SUBJECT:", subject)
@@ -16,8 +17,10 @@ def send_email(to_email: str, subject: str, body: str):
             "subject": subject,
             "html": f"<div style='white-space: pre-wrap;'>{body}</div>"
         }
-        resend.Emails.send(params)
-        return {"status": "sent"}
+        r = resend.Emails.send(params)
+        print("RESEND API RESPONSE:", r)
+        return {"status": "sent", "resend_id": getattr(r, "id", None)}
     except Exception as e:
-        print("Failed to send email via Resend:", str(e))
-        return {"status": "error", "message": str(e)}
+        error_msg = str(e)
+        print("CRITICAL: Failed to send email via Resend:", error_msg)
+        return {"status": "error", "message": error_msg}

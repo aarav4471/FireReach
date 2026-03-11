@@ -125,8 +125,11 @@ def tool_outreach_automated_sender(signals: str, icp: str, company: str, email_a
                     subject = line.replace("Subject:", "").strip()
                     break
                     
-        send_email(email_address, subject, email_content)
+        email_res = send_email(email_address, subject, email_content)
         
+        if email_res.get("status") == "error":
+            return f"The email was drafted but FAILED to send. Error: {email_res.get('message')}"
+            
         return f"Drafted and sent email successfully to {email_address}."
     except Exception as e:
         error_msg = f"Failed to generate and send email: {str(e)}"
