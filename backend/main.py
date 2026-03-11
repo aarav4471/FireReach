@@ -4,10 +4,12 @@ from pydantic import BaseModel
 from agent import run_firereach_agent
 
 app = FastAPI(title="FireReach API")
+VERSION = "1.2.0"
 
 @app.get("/")
 async def root():
-    return {"message": "FireReach API is Live!", "docs": "/docs", "status": "running"}
+    print(f"[{VERSION}] Root endpoint hit", flush=True)
+    return {"message": "FireReach API is Live!", "version": VERSION, "status": "running"}
 
 
 # Setup CORS for the React frontend
@@ -32,12 +34,14 @@ class AgentResponse(BaseModel):
 
 @app.post("/run-agent", response_model=AgentResponse)
 async def run_agent(request: AgentRequest):
+    print(f"[{VERSION}] Received run-agent request for company: {request.company}", flush=True)
     try:
         result = run_firereach_agent(
             company=request.company,
             icp=request.icp,
             email=request.email
         )
+        print(f"[{VERSION}] Agent execution completed for {request.company}", flush=True)
         return AgentResponse(
             signals=result.get("signals", []),
             research=result.get("research", ""),
