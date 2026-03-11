@@ -5,6 +5,11 @@ from agent import run_firereach_agent
 
 app = FastAPI(title="FireReach API")
 
+@app.get("/")
+async def root():
+    return {"message": "FireReach API is Live!", "docs": "/docs", "status": "running"}
+
+
 # Setup CORS for the React frontend
 app.add_middleware(
     CORSMiddleware,
@@ -42,9 +47,6 @@ async def run_agent(request: AgentRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
-@app.get("/")
-async def root():
-    return {"message": "FireReach API is Live!", "docs": "/docs"}
 
 @app.get("/health")
 async def health_check():
