@@ -38,4 +38,5 @@ def run_firereach_agent(company: str, icp: str, email: str):
     except Exception as e:
         print(f"Agent execution encountered an error: {e}")
         
+    run_state["target_email"] = email
     return run_state

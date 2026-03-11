@@ -11,7 +11,7 @@ def send_email(to_email: str, subject: str, body: str):
         
     try:
         params = {
-            "from": "FireReach <onboarding@resend.dev>", # Use verification domain in production
+            "from": "FireReach Agent <onboarding@resend.dev>",
             "to": to_email,
             "subject": subject,
             "html": f"<div style='white-space: pre-wrap;'>{body}</div>"

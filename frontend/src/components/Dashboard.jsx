@@ -255,6 +255,13 @@ export default function Dashboard() {
                       {results.email ? results.email.replace(/^\"|\"$/g, '') : "No email output."}
                     </div>
                   </div>
+                  {results.target_email && (
+                    <div className="bg-green-500/10 border-t border-green-500/20 p-4 text-center">
+                      <p className="text-green-400 font-medium text-sm">
+                        ✅ Email sent successfully to {results.target_email}
+                      </p>
+                    </div>
+                  )}
                 </div>
 
               </motion.div>

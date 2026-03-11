@@ -23,6 +23,7 @@ class AgentResponse(BaseModel):
     signals: list[str]
     research: str
     email: str
+    target_email: str = None
 
 @app.post("/run-agent", response_model=AgentResponse)
 async def run_agent(request: AgentRequest):
@@ -35,7 +36,8 @@ async def run_agent(request: AgentRequest):
         return AgentResponse(
             signals=result.get("signals", []),
             research=result.get("research", ""),
-            email=result.get("email", "")
+            email=result.get("email", ""),
+            target_email=result.get("target_email", request.email)
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
