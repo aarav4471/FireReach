@@ -8,13 +8,15 @@ from config import settings
 run_state = {
     "signals": [],
     "research": "",
-    "email": ""
+    "email": "",
+    "email_sent": False  # Safeguard flag
 }
 
 def clear_run_state():
     run_state["signals"] = []
     run_state["research"] = ""
     run_state["email"] = ""
+    run_state["email_sent"] = False
 
 @tool
 def tool_signal_harvester(company: str) -> str:
@@ -106,6 +108,10 @@ def tool_outreach_automated_sender(signals: str, icp: str, company: str, email_a
         send_email(email_address, f"Outreach for {company}", mock_email)
         return "Email sent successfully to " + email_address
         
+    if run_state.get("email_sent"):
+        print(f"DEBUG: Safeguard triggered. Email already sent in this run to {email_address}. Skipping.")
+        return f"Email was already successfully sent to {email_address}. Done."
+
     try:
         chat = ChatGroq(temperature=0.4, groq_api_key=api_key, model_name="llama-3.1-8b-instant")
         messages = [
@@ -125,12 +131,16 @@ def tool_outreach_automated_sender(signals: str, icp: str, company: str, email_a
                     subject = line.replace("Subject:", "").strip()
                     break
                     
+        print(f"DEBUG: Attempting to send email to {email_address} with subject: {subject}")
         email_res = send_email(email_address, subject, email_content)
+        print(f"DEBUG: send_email response: {email_res}")
         
         if email_res.get("status") == "error":
             return f"The email was drafted but FAILED to send. Error: {email_res.get('message')}"
             
-        return f"Drafted and sent email successfully to {email_address}."
+        run_state["email_sent"] = True
+        print(f"DEBUG: Drafted and sent email successfully to {email_address}")
+        return f"Drafted and sent email successfully to {email_address}. You have completed the workflow. STOP NOW."
     except Exception as e:
         error_msg = f"Failed to generate and send email: {str(e)}"
         run_state["email"] = error_msg
