@@ -11,9 +11,9 @@ export function cn(...inputs) {
 
 export default function Dashboard() {
   const [formData, setFormData] = useState({
-    icp: 'Cybersecurity training for Series B startups',
-    company: 'Stripe',
-    email: 'candidate-email@example.com'
+    icp: 'Cybersecurity training for Series B startups in United States',
+    company: '',
+    email: ''
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -33,11 +33,12 @@ export default function Dashboard() {
 
     try {
       // Small simulated delay for UX timeline
-      setTimeout(() => setStage('Harvesting Live Business Signals...'), 1500);
-      setTimeout(() => setStage('Analyzing with Research Analyst...'), 4000);
-      setTimeout(() => setStage('Generating Hyper-Personalized Email...'), 7000);
+      setTimeout(() => setStage('Discovering Target Company & Lead...'), 1500);
+      setTimeout(() => setStage('Harvesting Live Business Signals...'), 4000);
+      setTimeout(() => setStage('Analyzing with Research Analyst...'), 7000);
+      setTimeout(() => setStage('Generating Hyper-Personalized Email...'), 10000);
       
-      const data = await runAgent(formData.company, formData.icp, formData.email);
+      const data = await runAgent('', formData.icp, '');
       setResults(data);
       setStage('Complete');
     } catch (err) {
@@ -85,42 +86,15 @@ export default function Dashboard() {
                 <textarea 
                   name="icp"
                   required
-                  rows="3"
+                  rows="5"
                   value={formData.icp}
                   onChange={handleChange}
                   className="w-full bg-surfaceLight border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all resize-none"
-                  placeholder="e.g. We sell cybersecurity training to Series B startups"
+                  placeholder="e.g. We sell cybersecurity training to Series B startups in Europe"
                 />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-textMuted flex items-center gap-2">
-                  <Building2 className="w-4 h-4" /> Target Company
-                </label>
-                <input 
-                  type="text"
-                  name="company"
-                  required
-                  value={formData.company}
-                  onChange={handleChange}
-                  className="w-full bg-surfaceLight border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                  placeholder="e.g. Stripe"
-                />
-              </div>
-
-              <div className="space-y-1.5">
-                <label className="text-sm font-medium text-textMuted flex items-center gap-2">
-                  <Mail className="w-4 h-4" /> Target Email
-                </label>
-                <input 
-                  type="email"
-                  name="email"
-                  required
-                  value={formData.email}
-                  onChange={handleChange}
-                  className="w-full bg-surfaceLight border border-border rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary transition-all"
-                  placeholder="e.g. candidate-email@example.com"
-                />
+                <p className="text-[10px] text-textMuted mt-1 italic">
+                  * FireReach will automatically discover target companies and contacts based on this ICP.
+                </p>
               </div>
 
               <button 
@@ -206,39 +180,62 @@ export default function Dashboard() {
                 animate={{ opacity: 1, y: 0 }} 
                 className="space-y-6"
               >
-                {/* Signals Panel */}
-                <div className="glass-panel rounded-2xl p-6 shadow-xl relative overflow-hidden group">
-                  <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 rounded-full blur-3xl -mr-10 -mt-10"></div>
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 pb-2 border-b border-border/50">
-                    <Activity className="w-5 h-5 text-green-400" /> Captured Signals
-                  </h3>
-                  <ul className="space-y-3 relative z-10">
-                    {results.signals && results.signals.length > 0 ? (
-                      results.signals.map((signal, idx) => (
-                        <li key={idx} className="flex gap-3 text-sm items-start p-3 bg-surfaceLight/50 rounded-xl border border-white/5 hover:border-white/10 transition-colors">
-                          <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-2 shrink-0 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>
-                          <p className="text-textMuted leading-relaxed">{signal.replace(/^\"|\"$/g, '')}</p>
-                        </li>
-                      ))
-                    ) : (
-                      <p className="text-sm text-textMuted italic">No signals harvested.</p>
-                    )}
-                  </ul>
+                {/* Discovery Summary */}
+                <div className="flex flex-wrap gap-4">
+                  <div className="flex-1 min-w-[200px] glass-panel rounded-2xl p-4 border border-primary/20 bg-primary/5 flex items-center gap-4">
+                    <div className="p-3 bg-primary/10 rounded-xl">
+                      <Building2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-textMuted font-bold">Target Company</p>
+                      <p className="text-lg font-bold text-white leading-tight">{results.target_company || 'Discovered'}</p>
+                    </div>
+                  </div>
+                  <div className="flex-1 min-w-[200px] glass-panel rounded-2xl p-4 border border-accent/20 bg-accent/5 flex items-center gap-4">
+                    <div className="p-3 bg-accent/10 rounded-xl">
+                      <Target className="w-5 h-5 text-accent" />
+                    </div>
+                    <div>
+                      <p className="text-[10px] uppercase tracking-wider text-textMuted font-bold">Decision Maker</p>
+                      <p className="text-lg font-bold text-white leading-tight">{results.target_person || 'Found Lead'}</p>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Research Panel */}
-                <div className="glass-panel rounded-2xl p-6 shadow-xl relative overflow-hidden">
-                  <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 pb-2 border-b border-border/50">
-                    <BookOpen className="w-5 h-5 text-blue-400" /> Account Research Brief
-                  </h3>
-                  <div className="text-sm text-textMuted leading-relaxed space-y-4">
-                    {results.research ? (
-                      results.research.split('\n\n').map((para, i) => (
-                         <p key={i}>{para.replace(/^\"|\"$/g, '')}</p>
-                      ))
-                    ) : (
-                      <p className="italic">No research generated.</p>
-                    )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {/* Signals Panel */}
+                  <div className="glass-panel rounded-2xl p-6 shadow-xl relative overflow-hidden h-full">
+                    <h3 className="text-sm font-bold mb-4 flex items-center gap-2 uppercase tracking-widest text-textMuted border-b border-border/50 pb-2">
+                      <Activity className="w-4 h-4 text-green-400" /> Captured Signals
+                    </h3>
+                    <ul className="space-y-3 relative z-10">
+                      {results.signals && results.signals.length > 0 ? (
+                        results.signals.map((signal, idx) => (
+                          <li key={idx} className="flex gap-3 text-xs items-start p-2.5 bg-surfaceLight/30 rounded-xl border border-white/5">
+                            <div className="w-1.5 h-1.5 bg-green-400 rounded-full mt-1.5 shrink-0 shadow-[0_0_8px_rgba(74,222,128,0.8)]"></div>
+                            <p className="text-textMuted leading-relaxed">{signal.replace(/^\"|\"$/g, '')}</p>
+                          </li>
+                        ))
+                      ) : (
+                        <p className="text-sm text-textMuted italic text-center py-4">No signals harvested for this run.</p>
+                      )}
+                    </ul>
+                  </div>
+
+                  {/* Research Panel */}
+                  <div className="glass-panel rounded-2xl p-6 shadow-xl relative overflow-hidden h-full">
+                    <h3 className="text-sm font-bold mb-4 flex items-center gap-2 uppercase tracking-widest text-textMuted border-b border-border/50 pb-2">
+                      <BookOpen className="w-4 h-4 text-secondary" /> Account Research Brief
+                    </h3>
+                    <div className="text-xs text-textMuted leading-relaxed space-y-3 max-h-[250px] overflow-y-auto pr-2 custom-scrollbar">
+                      {results.research ? (
+                        results.research.split('\n\n').map((para, i) => (
+                          <p key={i}>{para.replace(/^\"|\"$/g, '')}</p>
+                        ))
+                      ) : (
+                        <p className="italic text-center py-4">No research generated.</p>
+                      )}
+                    </div>
                   </div>
                 </div>
 
@@ -256,10 +253,28 @@ export default function Dashboard() {
                     </div>
                   </div>
                   {results.target_email && (
-                    <div className="bg-green-500/10 border-t border-green-500/20 p-4 text-center">
-                      <p className="text-green-400 font-medium text-sm">
-                        ✅ Email sent successfully to {results.target_email}
-                      </p>
+                    <div className="bg-green-500/10 border-t border-green-500/20 p-4">
+                      <div className="flex flex-col gap-2 items-center text-center">
+                        <p className="text-green-400 font-medium text-sm">
+                          ✅ Email sent successfully
+                        </p>
+                        <div className="flex flex-wrap justify-center gap-4 mt-1">
+                          <div className="flex items-center gap-1.5 text-xs text-textMuted bg-surface px-3 py-1.5 rounded-full border border-border/50">
+                            <Building2 className="w-3.5 h-3.5 text-primary" />
+                            <span className="font-semibold text-white">{results.target_company || 'Discovered Company'}</span>
+                          </div>
+                          <div className="flex items-center gap-1.5 text-xs text-textMuted bg-surface px-3 py-1.5 rounded-full border border-border/50">
+                            <Mail className="w-3.5 h-3.5 text-primary" />
+                            <span className="font-semibold text-white">{results.target_email}</span>
+                          </div>
+                          {results.target_person && (
+                            <div className="flex items-center gap-1.5 text-xs text-textMuted bg-surface px-3 py-1.5 rounded-full border border-border/50">
+                              <Target className="w-3.5 h-3.5 text-primary" />
+                              <span className="font-semibold text-white">{results.target_person}</span>
+                            </div>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   )}
                 </div>

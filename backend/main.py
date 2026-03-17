@@ -22,15 +22,17 @@ app.add_middleware(
 )
 
 class AgentRequest(BaseModel):
-    company: str
     icp: str
-    email: str
+    company: str = ""
+    email: str = ""
 
 class AgentResponse(BaseModel):
     signals: list[str]
     research: str
     email: str
     target_email: str = None
+    target_company: str = None
+    target_person: str = None
 
 @app.post("/run-agent", response_model=AgentResponse)
 async def run_agent(request: AgentRequest):
@@ -46,7 +48,9 @@ async def run_agent(request: AgentRequest):
             signals=result.get("signals", []),
             research=result.get("research", ""),
             email=result.get("email", ""),
-            target_email=result.get("target_email", request.email)
+            target_email=result.get("target_email", request.email),
+            target_company=result.get("target_company", request.company),
+            target_person=result.get("target_person", "")
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
