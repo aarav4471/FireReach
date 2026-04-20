@@ -6,41 +6,67 @@
 
 @layer base {
   :root {
-    color-scheme: dark;
+    --background: #f8fafc;
+    --background-accent: #eef2ff;
+    --foreground: #1f2937;
+    --card: #ffffff;
+    --card-foreground: #1f2937;
+    --primary: #4f46e5;
+    --primary-foreground: #ffffff;
+    --accent: #6366f1;
+    --accent-foreground: #ffffff;
+    --border: #f3f4f6;
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
   }
 
   body {
-    @apply bg-background text-text antialiased;
+    @apply antialiased min-h-screen;
+    background: linear-gradient(135deg, var(--background) 0%, var(--background-accent) 100%);
+    color: var(--foreground);
     font-family: 'Outfit', sans-serif;
   }
+}
 
-  /* Custom Scrollbar */
-  ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+@layer components {
+  .soft-card {
+    @apply bg-white rounded-2xl shadow-md border border-gray-100 p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
   }
-  ::-webkit-scrollbar-track {
-    @apply bg-background;
+
+  .soft-input {
+    @apply w-full bg-white border border-gray-200 rounded-xl px-4 py-3 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-400/20 focus:border-indigo-400 transition-all placeholder:text-gray-400 shadow-sm shadow-indigo-500/5;
   }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-surfaceLight rounded;
+
+  .gradient-button-primary {
+    @apply bg-gradient-to-r from-indigo-500 to-blue-500 text-white hover:from-indigo-600 hover:to-blue-600 active:scale-[0.98] rounded-xl px-6 py-3 font-semibold transition-all shadow-md shadow-indigo-500/10 flex items-center justify-center gap-2 hover:scale-[1.03];
   }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-border;
+
+  .soft-button-secondary {
+    @apply bg-white text-gray-700 border border-gray-100 hover:bg-gray-50 active:scale-[0.98] rounded-xl px-6 py-3 font-semibold transition-all flex items-center justify-center gap-2 shadow-sm;
+  }
+
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-indigo-600 to-purple-600;
   }
 }
 
 @layer utilities {
-  .glow-primary {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+  .blob {
+    @apply absolute blur-[120px] opacity-20 pointer-events-none -z-10 bg-gradient-to-br from-indigo-300 to-purple-300 rounded-full;
   }
-  .glow-accent {
-    box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
-  }
-  .glass-panel {
-    background: rgba(20, 21, 26, 0.7);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    @apply border border-white/5;
-  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-indigo-100 rounded-full border-2 border-transparent bg-clip-padding;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-indigo-200;
 }

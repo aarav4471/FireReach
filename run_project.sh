@@ -1,6 +1,8 @@
 #!/bin/bash
 # Startup script for FireReach
 
+export PATH="/opt/homebrew/bin:/usr/local/bin:$PATH"
+
 echo "🚀 Starting FireReach Outreach Engine..."
 
 # Start Backend

@@ -7,15 +7,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: "#0a0a0b",
-        surface: "#14151a", 
-        surfaceLight: "#1c1e26",
-        primary: "#6366f1",
-        primaryHover: "#818cf8",
-        accent: "#f43f5e",
-        text: "#f8fafc",
-        textMuted: "#94a3b8",
-        border: "#272a37"
+        background: "#f8fafc", // Gray 50
+        surface: "#ffffff",    // White
+        surfaceLight: "#f1f5f9", // Gray 100
+        primary: "#000000",     // Black for primary actions
+        primaryHover: "#1e293b", // Slate 800
+        accent: "#3b82f6",      // Blue 500
+        foreground: "#000000",  // Pure Black
+        foregroundMuted: "#475569", // Slate 600
+        border: "#e2e8f0"       // Gray 200
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-out',

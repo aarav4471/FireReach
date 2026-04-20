@@ -1,0 +1,28 @@
+INFO:     Will watch for changes in these directories: ['/Users/aaravchugh8607/Desktop/rabbit_assesment/backend']
+INFO:     Uvicorn running on http://127.0.0.1:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [58037] using StatReload
+INFO:     Started server process [58041]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     127.0.0.1:58128 - "OPTIONS /discover-companies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58128 - "POST /discover-companies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58130 - "OPTIONS /get-contacts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58130 - "POST /get-contacts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58143 - "OPTIONS /generate-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58143 - "POST /generate-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58305 - "POST /discover-companies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58310 - "POST /get-contacts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58315 - "POST /generate-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58351 - "OPTIONS /manual-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58351 - "POST /manual-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58407 - "OPTIONS /discover-companies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58407 - "POST /discover-companies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58417 - "OPTIONS /get-contacts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58417 - "POST /get-contacts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58426 - "POST /discover-companies HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58426 - "POST /get-contacts HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58435 - "OPTIONS /generate-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58435 - "POST /generate-email HTTP/1.1" 200 OK
+INFO:     127.0.0.1:58445 - "OPTIONS /send-email HTTP/1.1" 200 OK
+Email sent successfully via SMTP to mkala@chegg.com
+INFO:     127.0.0.1:58445 - "POST /send-email HTTP/1.1" 200 OK
